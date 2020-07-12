@@ -22,7 +22,7 @@ namespace UsersAndDepartments.Controllers
         public Task<User> AddUser([FromBody] User user)
         {
             if (String.IsNullOrEmpty(user.FIO)) throw new Exception("Не введено ФИО");
-            if (user.DepId > 0) throw new Exception("Не введен DepId");
+            if (user.DepId == 0) throw new Exception("Не введен DepId");
             return _usersService.AddUser(user);
         }
 

@@ -30,7 +30,7 @@ namespace UsersAndDepartments.Controllers
         public async Task<Department> UpdateDepartment([FromBody] Department department)
         {
             if (String.IsNullOrEmpty(department.Name)) throw new Exception("Не введено название отдела");
-            if (department.DepartmentId > 0) throw new Exception("Нет индификатора отдела");
+            if (department.DepartmentId == 0) throw new Exception("Нет индификатора отдела");
 
             var departmentDb = await _departmentsService.ById(department.DepartmentId);
             if (departmentDb != null)
@@ -44,11 +44,11 @@ namespace UsersAndDepartments.Controllers
         
         [Route("DeleteDepartment")]
         [HttpDelete]
-        public async Task<bool> DeleteDepartment([FromBody] int departmentId)
+        public async Task<bool> DeleteDepartment([FromBody] Department department)
         {
-            if (departmentId > 0) throw new Exception("Нет индификатора отдела");
+            if (department.DepartmentId == 0) throw new Exception("Нет индификатора отдела");
 
-            var departmentDb = await _departmentsService.ById(departmentId);
+            var departmentDb = await _departmentsService.ById(department.DepartmentId);
             if (departmentDb != null)
             {
                 await _departmentsService.DeleteDepartment(departmentDb);
@@ -61,7 +61,7 @@ namespace UsersAndDepartments.Controllers
         [HttpGet]
         public Task<List<Department>> GetDepartments()
         {
-            var departments= _departmentsService.GetDepartments();
+            var departments = _departmentsService.GetDepartments();
             return departments;
         }
     }

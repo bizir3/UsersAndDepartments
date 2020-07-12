@@ -1,0 +1,12 @@
+.ant-upload-select-picture-card {
+    width: 160px !important;
+    height: 64px !important;
+}
+.ant-tag {
+    line-height:32px;
+    margin-top:10px;
+}
+.ant-upload.selected{
+    border: 3px solid #597da3 !important;
+}
+
