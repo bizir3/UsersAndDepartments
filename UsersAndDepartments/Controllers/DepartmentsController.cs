@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using UsersAndDepartments.Data;
 using UsersAndDepartments.Models;
 
 namespace UsersAndDepartments.Controllers
@@ -64,7 +59,7 @@ namespace UsersAndDepartments.Controllers
         
         [Route("GetDepartments")]
         [HttpGet]
-        public Task<List<Department>> Get()
+        public Task<List<Department>> GetDepartments()
         {
             var departments= _departmentsService.GetDepartments();
             return departments;

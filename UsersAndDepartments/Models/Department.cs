@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace UsersAndDepartments.Models
 {
@@ -10,6 +11,7 @@ namespace UsersAndDepartments.Models
         public DateTime DateAdd { get; set; }
         public DateTime DateUpdate { get; set; }
         
+        [JsonIgnore]
         public virtual IEnumerable<User> Users { get; set; }
     }
 }

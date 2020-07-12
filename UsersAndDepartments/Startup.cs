@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,10 +21,11 @@ namespace UsersAndDepartments
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IDepartmentsService, DepartmentsService>();
+            services.AddScoped<IUsersService, UsersService>();
+            
             services.AddDbContext<DBContext>(options => options.UseInMemoryDatabase(databaseName: "UsersAndDepartments"));
 
-            services.AddSingleton<IDepartmentsService, DepartmentsService>();
-            
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

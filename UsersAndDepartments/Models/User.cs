@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace UsersAndDepartments.Models
 {
@@ -10,7 +9,8 @@ namespace UsersAndDepartments.Models
         public string FIO { get; set; }
         public int DepId { get; set; }
         public DateTime DateAdd { get; set; }
-        
+     
+        [JsonIgnore]
         public virtual Department Department { get; set; }
     }
 }
