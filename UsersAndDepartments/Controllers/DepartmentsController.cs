@@ -15,25 +15,19 @@ namespace UsersAndDepartments.Controllers
     [Route("api/[controller]")]
     public class DepartmentsController : ControllerBase
     {
-        private readonly DBContext _dbContext;
+        private readonly IDepartmentsService _departmentsService;
         
-        public DepartmentsController(DBContext dbContext)
+        public DepartmentsController(IDepartmentsService departmentsService)
         {
-            _dbContext = dbContext;
+            _departmentsService = departmentsService;
         }
         
         [Route("AddDepartment")]
         [HttpPost]
-        public async Task<Department> AddDepartment([FromBody] Department department)
+        public Task<Department> AddDepartment([FromBody] Department department)
         {
             if (String.IsNullOrEmpty(department.Name)) throw new Exception("Не введено название отдела");
-            
-            department.DateAdd = DateTime.Now;
-            department.DateUpdate = DateTime.Now;
-            _dbContext.Departments.Add(department);
-            await _dbContext.SaveChangesAsync();
-
-            return department;
+            return _departmentsService.AddDepartment(department);
         }
         
         [Route("UpdateDepartment")]
@@ -43,15 +37,11 @@ namespace UsersAndDepartments.Controllers
             if (String.IsNullOrEmpty(department.Name)) throw new Exception("Не введено название отдела");
             if (department.DepartmentId > 0) throw new Exception("Нет индификатора отдела");
 
-            var departmentDb = _dbContext.Departments.FirstOrDefault(d => d.DepartmentId == department.DepartmentId);
-
+            var departmentDb = await _departmentsService.ById(department.DepartmentId);
             if (departmentDb != null)
             {
-                departmentDb.DateUpdate = DateTime.Now;
                 departmentDb.Name = department.Name;
-            
-                _dbContext.Departments.Update(departmentDb);
-                await _dbContext.SaveChangesAsync();    
+                await _departmentsService.UpdateDepartment(departmentDb);
             } else throw new Exception("Отдел не найден");
 
             return departmentDb;
@@ -59,15 +49,14 @@ namespace UsersAndDepartments.Controllers
         
         [Route("DeleteDepartment")]
         [HttpDelete]
-        public async Task<bool> DeleteDepartment([FromBody] Department department)
+        public async Task<bool> DeleteDepartment([FromBody] int departmentId)
         {
-            if (department.DepartmentId > 0) throw new Exception("Нет индификатора отдела");
+            if (departmentId > 0) throw new Exception("Нет индификатора отдела");
 
-            var departmentDb = _dbContext.Departments.FirstOrDefault(d => d.DepartmentId == department.DepartmentId);
+            var departmentDb = await _departmentsService.ById(departmentId);
             if (departmentDb != null)
             {
-                _dbContext.Departments.Remove(departmentDb);
-                await _dbContext.SaveChangesAsync();    
+                await _departmentsService.DeleteDepartment(departmentDb);
             } else throw new Exception("Отдел не найден");
 
             return true;
@@ -77,7 +66,7 @@ namespace UsersAndDepartments.Controllers
         [HttpGet]
         public Task<List<Department>> Get()
         {
-            var departments= _dbContext.Departments.ToListAsync();
+            var departments= _departmentsService.GetDepartments();
             return departments;
         }
     }

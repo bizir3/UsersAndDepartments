@@ -24,6 +24,8 @@ namespace UsersAndDepartments
         {
             services.AddDbContext<DBContext>(options => options.UseInMemoryDatabase(databaseName: "UsersAndDepartments"));
 
+            services.AddSingleton<IDepartmentsService, DepartmentsService>();
+            
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
