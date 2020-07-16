@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using UsersAndDepartments.Data;
 using UsersAndDepartments.Models;
 
-namespace UsersAndDepartments.Controllers
+namespace UsersAndDepartments.Services
 {
 
-    public abstract class IUsersService
+    public interface IUsersService
     {
-        public abstract Task<List<User>> ByDepartmentId(int departmentId);
-        public abstract Task<User> AddUser(User user);
+        public Task<List<User>> ByDepartmentId(int departmentId);
+        public Task<User> AddUser(User user);
     }
     
     public class UsersService : IUsersService
@@ -24,12 +24,12 @@ namespace UsersAndDepartments.Controllers
             _dbContext = dbContext;
         }
         
-        public override Task<List<User>> ByDepartmentId(int departmentId)
+        public Task<List<User>> ByDepartmentId(int departmentId)
         {
             return _dbContext.Users.Where(d => d.DepId == departmentId).ToListAsync();
         }
         
-        public override async Task<User> AddUser(User user)
+        public async Task<User> AddUser(User user)
         {
             user.DateAdd = DateTime.Now;
          

@@ -5,16 +5,16 @@ using Microsoft.EntityFrameworkCore;
 using UsersAndDepartments.Data;
 using UsersAndDepartments.Models;
 
-namespace UsersAndDepartments.Controllers
+namespace UsersAndDepartments.Services
 {
 
-    public abstract class IDepartmentsService
+    public interface IDepartmentsService
     {
-        public abstract Task<Department> ById(int departmentId);
-        public abstract Task<Department> AddDepartment(Department department);
-        public abstract Task<Department> UpdateDepartment(Department department);
-        public abstract Task<bool> DeleteDepartment(Department department);
-        public abstract Task<List<Department>> GetDepartments();
+        public Task<Department> ById(int departmentId);
+        public Task<Department> AddDepartment(Department department);
+        public Task<Department> UpdateDepartment(Department department);
+        public Task<bool> DeleteDepartment(Department department);
+        public Task<List<Department>> GetDepartments();
     }
     
     public class DepartmentsService : IDepartmentsService
@@ -26,12 +26,12 @@ namespace UsersAndDepartments.Controllers
             _dbContext = dbContext;
         }
         
-        public override Task<Department> ById(int departmentId)
+        public Task<Department> ById(int departmentId)
         {
             return _dbContext.Departments.FirstOrDefaultAsync(d => d.DepartmentId == departmentId);
         }
         
-        public override async Task<Department> AddDepartment(Department department)
+        public async Task<Department> AddDepartment(Department department)
         {
             department.DateAdd = DateTime.Now;
             department.DateUpdate = DateTime.Now;
@@ -42,7 +42,7 @@ namespace UsersAndDepartments.Controllers
             return department;
         }
         
-        public override async Task<Department> UpdateDepartment(Department department)
+        public async Task<Department> UpdateDepartment(Department department)
         {
             department.DateUpdate = DateTime.Now;
 
@@ -52,7 +52,7 @@ namespace UsersAndDepartments.Controllers
             return department;
         }
         
-        public override async Task<bool> DeleteDepartment(Department department)
+        public async Task<bool> DeleteDepartment(Department department)
         {
             _dbContext.Departments.Remove(department);
             await _dbContext.SaveChangesAsync();    
@@ -60,7 +60,7 @@ namespace UsersAndDepartments.Controllers
             return true;
         }
         
-        public override Task<List<Department>> GetDepartments()
+        public Task<List<Department>> GetDepartments()
         {
             return _dbContext.Departments.ToListAsync();;
         }

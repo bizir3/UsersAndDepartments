@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using UsersAndDepartments.Controllers;
 using UsersAndDepartments.Data;
+using UsersAndDepartments.Services;
 
 namespace UsersAndDepartments
 {
